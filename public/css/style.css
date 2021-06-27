@@ -1,0 +1,277 @@
+ .vertical-center {
+  min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
+:root {
+  --black: #0d0d0d;
+  --darkgray: #595657;
+  --gray: #a6a6a6;
+  --lightgray: #d2d3d9;
+  --lightergray: #eeeeee;
+  --blue: #3f7891;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Raleway";
+}
+header {
+  background-color: var(--gray);
+}
+
+header h1,
+header h3 {
+  color: var(--darkgray);
+}
+
+header h1 i {
+  color: var(--blue);
+}
+header i {
+  color: var(--black);
+}
+
+header.header h1 {
+  font-family: "Fredoka One";
+}
+.main {
+  background-color: var(--lightgray);
+}
+.label-text {
+  color: var(--darkgray);
+}
+.sidebar {
+  background-color: var(--lightgray);
+}
+
+.sidebar ul {
+  background-color: var(--lightergray);
+}
+.main-container {
+  background-color: var(--lightgray);
+}
+.messages {
+  background-color: var(--lightergray);
+  padding: 5px;
+}
+.message {
+  background-color: var(--lightergray);
+  padding: 2px;
+}
+.message b {
+  color: var(--blue);
+}
+.footer {
+  background-color: var(--lightgray);
+}
+.vertical-center {
+  min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+.jumbotron {
+  height: 100%;
+  width: 100%;
+}
+.container {
+  width: 90%;
+}
+.jumbotron .container {
+  max-width: 100%;
+}
+ul {
+  list-style: none;
+  overflow-y: scroll;
+}
+ul#rooms{
+  list-style: none;
+  overflow-y: hidden;
+}
+.messages {
+  max-height: 500px;
+  overflow-y: scroll;
+  padding: 20px;
+}
+
+.btn-primary {
+  background-color: #3f7891 !important;
+  border-color: #3f7891 !important;
+}
+.caret {
+  width: 0;
+  height: 0;
+  display: inline-block;
+  border: 40px solid transparent;
+  margin-left: 88%;
+  z-index: 5;
+}
+.caret.down {
+  border-top-color: var(--lightgray);
+}
+
+@media screen and (max-width: 850px) {
+  .caret {
+    margin-left: 80%;
+  }
+} 
+
+.panel-login {
+  border-color: #ccc;
+  border-radius: 0 0 50px 50px;
+  -webkit-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.2);
+}
+.panel-login .panel-heading {
+  color: var(--black);
+  background-color: var(--lightgray);
+  border-color: var(--lightgray);
+  text-align: center;
+}
+.panel-login .panel-heading a {
+  text-decoration: none;
+  color: #666;
+  font-weight: bold;
+  font-size: 15px;
+  -webkit-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  transition: all 0.1s linear;
+}
+.panel-login  .panel-heading a.active {
+  color: var(--blue);
+  font-size: 18px;
+}
+.panel-login  .panel-heading hr {
+  margin-top: 10px;
+  margin-bottom: 0px;
+  clear: both;
+  border: 0;
+  height: 1px;
+  background-image: -webkit-linear-gradient(
+    left,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0)
+  );
+  background-image: -moz-linear-gradient(
+    left,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0)
+  );
+  background-image: -ms-linear-gradient(
+    left,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0)
+  );
+  background-image: -o-linear-gradient(
+    left,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0)
+  );
+}
+.panel-login input[type="text"],
+.panel-login input[type="email"],
+.panel-login input[type="password"] {
+  height: 45px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  text-align: center;
+  -webkit-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  transition: all 0.1s linear;
+}
+.panel-login input:hover,
+.panel-login input:focus {
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border-color: #ccc;
+}
+.btn-login {
+  background-color: var(--blue);
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  height: auto;
+  font-weight: normal;
+  padding: 14px 0;
+  text-transform: uppercase;
+  border-color: var(--blue);
+}
+.btn-change {
+  background-color: var(--blue);
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  height: auto;
+  font-weight: normal;
+  padding: 7px 0;
+  text-transform: uppercase;
+  border-color: var(--blue);
+}
+.btn-login:hover,
+.btn-login:focus {
+  color: #fff;
+  background-color: var(--blue);
+  border-color: var(--blue);
+}
+.forgot-password {
+  text-decoration: underline;
+  color: #888;
+}
+.forgot-password:hover,
+.forgot-password:focus {
+  text-decoration: underline;
+  color: #666;
+}
+
+.btn-register {
+  background-color: var(--blue);
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  height: auto;
+  font-weight: normal;
+  padding: 14px 0;
+  text-transform: uppercase;
+  border-color: var(--blue);
+}
+.btn-register:hover,
+.btn-register:focus {
+  color: #fff;
+  background-color: var(--blue);
+  border-color: var(--blue);
+}
+
+ul{
+  text-align: center;
+}
+li {
+  text-align: center;
+  padding: 5px;
+}
+
+li.active {
+  border: solid 2px #3f7891;
+  color: #0d0d0d;
+}
+
+.noimportant {
+  font-size: 12px;
+  color: #888;
+}

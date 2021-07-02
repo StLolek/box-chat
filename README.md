@@ -11,6 +11,7 @@ Projekt serwisu internetowego, którego główną funkcjonalnościami jest chat,
 - redis
 - bcrypt
 - js-cookie
+- jquery
 
 ## Plan (podzielony na sprinty):
 
@@ -18,7 +19,7 @@ Projekt serwisu internetowego, którego główną funkcjonalnościami jest chat,
 
 #### - System rejestracyjny oraz logowania:
 
-- [ ] Prosty formularz rejestracyjny [login, mail, hasło] z captchą 
+- [ ] Prosty formularz rejestracyjny [login, mail, hasło] z captchą    
 - [ ] Formularz logowania 
 - [ ] Odzyskiwanie hasła
 

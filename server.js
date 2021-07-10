@@ -37,6 +37,7 @@ db.on('connected', () => {
   console.log('Połączono z MongoDB Atlas')
 })
 
+var User = db.collection('User');
 const serverRedis = new RedisServer({
   port: 6379,
   bin: '/usr/local/bin/redis-server'
@@ -160,48 +161,53 @@ app.all('/room/join', async function (req, res) {
   res.redirect('/czat.html');
 })
 
-app.all('/user/login', function (req, res) {
-  session.username = req.body.username;
-  session.room = req.body.rooms;
-  if (req.body.remember) {
-    res.cookie('rememberme', 'yes', { expires: 0, httpOnly: true });
+app.all('/user/login', async function (req, res) {
+
+  let userData = await User.findOne({username: req.body.username});
+
+  if(userData){
+    if(await checkPassword(req.body.password, userData.password)){
+      session.username = req.body.username;
+      res.cookie('username', session.username, { httpOnly: false });
+      return res.send({"status":200, "message":"Zalogowano pomyślnie"});
+    } else {
+      return res.send({"status":500, "message":"Login bądź hasło nie jest poprawne"});
+    }
+  } else {
+    return res.send({"status":500, "message":"Login bądź hasło nie jest poprawne"})
   }
-  res.cookie('username', session.username, { httpOnly: false });
-  res.cookie('room', session.room, { httpOnly: false });
-  res.redirect('/czat.html');
+  // res.cookie('room', session.room, { httpOnly: false });
 })
 
 app.all('/user/register', async function (req, res) {
   data = {};
   if (req.body.captcha === session.captcha) {
-    let count = await db.collection('User').countDocuments({ username: req.body.username });
+    let count = await User.countDocuments({ username: req.body.username });
     if (count > 0) {
-      res.send('Wpisany login jest zajęty.');
-      return;
+      return res.send({"status":500,"message":"Wpisany login jest zajęty."});
     } else {
       data['username'] = req.body.username;
     }
     if (req.body.email === '') {
     } else {
-      let count = db.collection('User').countDocuments({ email: req.body.email });
+      let count = User.countDocuments({ email: req.body.email });
       if (count > 0) {
-        res.send('Wpisany email jest zajęty');
+        return res.send({"status":500, "message":"Wpisany email jest zajęty"});
       } else {
         data['email'] = req.body.email;
       }
     }
-    if (req.body.password == req.body.confirmPassword && req.body.password.length > 5){
+    if (req.body.password == req.body.confirmPassword && req.body.password.length > 5) {
       data['password'] = hashPassword(req.body.password);
     } else {
-      if(req.body.password != req.body.confirmPassword){
-        res.send('Wpisane hasła nie są takie same.');
-      } else if(req.body.password.length > 5){
-        res.send('Hasło musi mieć minimum 6 znaków');
+      if (req.body.password != req.body.confirmPassword) {
+        return res.send({"status":500, "message":"Wpisane hasła nie są takie same."});
+      } else if (req.body.password.length > 5) {
+        return res.send({"status":500,"message":"Hasło musi składać się z conajmniej 6 znaków."});
       }
     }
-
-    db.collection('User').insertOne(data);
-    res.redirect('/');
+    User.insertOne(data);
+    return res.send({"status":200, "message":"Konto zostało założone poprawnie, teraz się zaloguj"});
   }
 })
 
@@ -227,6 +233,10 @@ app.get('/captcha', function (req, res) {
 function hashPassword(password) {
   const salt = bcrypt.genSaltSync(saltRounds);
   return bcrypt.hashSync(password, salt);
+}
+
+function checkPassword(password, hashedPassword) {
+  return bcrypt.compare(password, hashedPassword);
 }
 
 const PORT = 3000 || process.env.PORT;

@@ -15,20 +15,45 @@
     href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Fredoka+One&family=Syne+Mono&family=Train+One&display=swap"
     rel="stylesheet" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script
-  type="module"
-  src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.mjs"
-></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css"
+    integrity="sha512-oe8OpYjBaDWPt2VmSFR+qYOdnTjeV9QPLJUeqZyprDEQvQLJ9C5PCFclxwNuvb/GQgQngdCXzKSFltuHD3eCxA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"
+    integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.mjs"></script>
   <script>
     $(function () {
+      toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      };
 
-      $(".guest-username").on("input", function(){
-  var regexp = /[^a-zA-Z0-9]/g;
-  if($(this).val().match(regexp)){
-    $(this).val( $(this).val().replace(regexp,'') );
-  }
-});
+      function getCaptcha() {
+        $.get("/captcha", function (data) {
+          $(".captcha").html('<img class="mx-auto d-block" src="' + data + '" />');
+        });
+      }
 
+      $(".guest-username").on("input", function () {
+        var regexp = /[^a-zA-Z0-9]/g;
+        if ($(this).val().match(regexp)) {
+          $(this).val($(this).val().replace(regexp, ''));
+        }
+      });
 
       $("#login-form-link").click(function (e) {
         $("#login-form").delay(100).fadeIn(100);
@@ -45,9 +70,7 @@
         $("#register-form-link").removeClass("active");
         $("#login-form").fadeOut(100);
         $("#login-form-link").removeClass("active");
-        $.get("/captcha", function (data) {
-          $(".captcha").html('<img class="mx-auto d-block" src="' + data + '" />');
-        });
+        getCaptcha();
         $(this).addClass("active");
         e.preventDefault();
       });
@@ -69,6 +92,65 @@
         });
         e.preventDefault();
       });
+
+      $("#register-form").submit(function (e) {
+        e.preventDefault();
+        var data = $(this).serialize();
+        $.post("/user/register", data, function (data) {
+          // $(".result").html(data);
+          if (data.status == 500) {
+            toastr.options = {
+              "closeButton": true,
+              "debug": false,
+              "newestOnTop": false,
+              "progressBar": false,
+              "positionClass": "toast-top-center",
+              "preventDuplicates": true,
+              "onclick": null,
+              "showDuration": "300",
+              "hideDuration": "1000",
+              "timeOut": "5000",
+              "extendedTimeOut": "1000",
+              "showEasing": "swing",
+              "hideEasing": "linear",
+              "showMethod": "fadeIn",
+              "hideMethod": "fadeOut"
+            };
+            toastr["error"](data.message, "Błąd");
+            $('input#username').val('');
+            $('input#password').val('');
+            $('input#confirmPassword').val('');
+            $('input#email').val('');
+            $('input#captcha').val('');
+            $('input#username').focus();
+            getCaptcha();
+          } else if (data.status == 200) {
+            $("#login-form").addClass('active');
+            $("#login-form").delay(100).fadeIn(100);
+            $("#register-form").fadeOut(100);
+            $("#register-form-link").removeClass("active");
+            $("#guest-form").fadeOut(100);
+            $("#guest-form-link").removeClass("active");
+            toastr["success"]("Konto zostało założone. <br> Teraz czas się zalogować :)");
+            $('input#username').focus();
+          }
+        });
+
+      });
+
+      $("#login-form").submit(function (e) {
+        e.preventDefault();
+        var data = $(this).serialize();
+        $.post("/user/login", data, function (data) {
+          if (data.status == 500) {
+            toastr["error"](data.message, "Błąd");
+            $('input#password').val('');
+            $('input#password').focus();
+          } else if(data.status == 200){
+            window.location.href = "/rooms.html";
+          }
+        })
+      })
     });
   </script>
   <title>BoxChat</title>
@@ -84,6 +166,7 @@
           </h1>
         </div>
       </header>
+
       <main class="main mt-0 w-50 mx-auto" style="border-radius: 0 0 50px 50px">
         <div class="row mt-0">
           <div class="col-12 mx-auto">
@@ -102,7 +185,7 @@
               <div class="panel-body" style="border-radius: 0 0 50px 50px">
                 <div class="row">
                   <div class="col-8 mx-auto">
-                    <span class="res"></span>
+                    <!-- Formularz logowania -->
                     <form id="login-form" action="/user/login" method="post" role="form" style="display: block">
                       <div class="form-group mt-5">
                         <input type="text" name="username" id="username" tabindex="1" class="form-control"
@@ -111,10 +194,6 @@
                       <div class="form-group mt-4">
                         <input type="password" name="password" id="password" tabindex="2" class="form-control"
                           placeholder="Hasło" />
-                      </div>
-                      <div class="form-group mt-4 text-center">
-                        <input type="checkbox" tabindex="3" class="" name="remember" id="remember" />
-                        <label for="remember"> Zapamiętaj dane</label>
                       </div>
                       <div class="form-group mt-3">
                         <div class="row">
@@ -143,7 +222,8 @@
                         </div>
                       </div>
                     </form>
-                    <form id="register-form" action="/user/register" method="post" role="form" style="display: none">
+                    <!-- Formularz rejestracyjny -->
+                    <form id="register-form" method="post" role="form" style="display: none" autocomplete="off">
                       <div class="form-group mt-5">
                         <input type="text" name="username" id="username" tabindex="1" class="form-control"
                           placeholder="Login" value="" />
@@ -191,16 +271,17 @@
                         <div class="row">
                           <div class="col-lg-12">
                             <div class="text-center noimportant">
-                             * - pozycja nieobowiązkowa
+                              * - pozycja nieobowiązkowa
                             </div>
                           </div>
                         </div>
                       </div>
                     </form>
+                    <!-- Formularz logowania gościa -->
                     <form id="guest-form" action="/guest-login" method="post" role="form" style="display: none">
                       <div class="form-group mt-5">
-                        <input type="text" name="username" id="username" tabindex="1" class="form-control guest-username"
-                          placeholder="Login" value="" />
+                        <input type="text" name="username" id="username" tabindex="1"
+                          class="form-control guest-username" placeholder="Login" value="" />
                       </div>
                       <div class="form-group mt-4 mx-auto">
                         <div class="row justify-content-center">

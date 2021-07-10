@@ -5,6 +5,8 @@ Projekt serwisu internetowego, którego główną funkcjonalnościami jest chat,
 ## Wykorzystano:
 - Node.js
 - Express
+- express-session
+- express-validator
 - socket.io
 - MongoDB
 - mongoose
@@ -25,8 +27,8 @@ Projekt serwisu internetowego, którego główną funkcjonalnościami jest chat,
 
 #### - Czat:
 
-- [ ] Lista pokojów pobierana z bazy danych
-- [ ] Prosty czat podzielony na pokoje
+- [x] Lista pokojów pobierana z bazy danych
+- [x] Prosty czat podzielony na pokoje
 
 ### Sprint 2:
 

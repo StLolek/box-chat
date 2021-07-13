@@ -1,4 +1,3 @@
-const url = "mongodb+srv://User:Password123@boxchat.hq5c9.mongodb.net/BoxChat?retryWrites=true&w=majority";
 const mongoose = require('mongoose');
 const path = require("path");
 const http = require("http").Server;
@@ -10,8 +9,18 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const redis = require('redis');
 const session = require('express-session');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 
+var transport = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD
+  }
+});
 
 const RedisServer = require('redis-server');
 
@@ -26,7 +35,7 @@ const {
   getRoomUsers,
 } = require("./utils/users");
 
-const connect = mongoose.connect(url, {
+const connect = mongoose.connect(process.env.DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -39,10 +48,10 @@ db.on('connected', () => {
 
 var User = db.collection('User');
 const serverRedis = new RedisServer({
-  port: 6379,
+  port: process.env.REDIS_PORT,
   bin: '/usr/local/bin/redis-server'
 });
-var redisClient = redis.createClient(6379, 'localhost');
+var redisClient = redis.createClient(process.env.REDIS_PORT, 'localhost');
 var RedisStore = require('connect-redis')(session);
 
 const app = express();
@@ -216,7 +225,7 @@ app.all('/guest-login', function (req, res) {
     res.cookie('username', req.body.username, { httpOnly: false });
     res.redirect('/rooms.html');
   } else {
-    res.send('error');
+    res.send({"status":500, "message":"Wpisano błędną captchę."});
   }
 
 })

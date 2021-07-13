@@ -80,6 +80,22 @@
         $("#login-form-link").removeClass("active");
         $("#guest-form").fadeOut(100);
         $("#guest-form-link").removeClass("active");
+        $("#password-form").fadeOut(100);
+
+        $.get("/captcha", function (data) {
+          $(".captcha").html('<img class="mx-auto d-block" src="' + data + '" />');
+        });
+        $(this).addClass("active");
+        e.preventDefault();
+      });
+
+      $("#password-form-link").click(function (e) {
+        $("#password-form").delay(100).fadeIn(100);
+        $("#login-form").fadeOut(100);
+        $("#login-form-link").removeClass("active");
+        $("#guest-form").fadeOut(100);
+        $("#guest-form-link").removeClass("active");
+        $("#register-form").fadeOut(100);
         $.get("/captcha", function (data) {
           $(".captcha").html('<img class="mx-auto d-block" src="' + data + '" />');
         });
@@ -146,7 +162,7 @@
             toastr["error"](data.message, "Błąd");
             $('input#password').val('');
             $('input#password').focus();
-          } else if(data.status == 200){
+          } else if (data.status == 200) {
             window.location.href = "/rooms.html";
           }
         })
@@ -207,7 +223,7 @@
                         <div class="row">
                           <div class="col-lg-12">
                             <div class="text-center">
-                              <a href="#" tabindex="5" class="forgot-password">Przypomnij hasło?</a>
+                              <a href="#" id="password-form-link" class="forgot-password">Przypomnij hasło?</a>
                             </div>
                           </div>
                         </div>
@@ -279,6 +295,40 @@
                     </form>
                     <!-- Formularz logowania gościa -->
                     <form id="guest-form" action="/guest-login" method="post" role="form" style="display: none">
+                      <div class="form-group mt-5">
+                        <input type="text" name="username" id="username" tabindex="1"
+                          class="form-control guest-username" placeholder="Login" value="" />
+                      </div>
+                      <div class="form-group mt-4 mx-auto">
+                        <div class="row justify-content-center">
+                          <div class="captcha col  ml-2" style="position: relative;float: right;"></div>
+                          <div class="col mr-2">
+                            <input type="text" name="captcha" id="captcha" tabindex="1" class="form-control"
+                              placeholder="Captcha" value="" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mt-4">
+                        <div class="row">
+                          <div class="col-sm-6 mx-auto">
+                            <input type="submit" name="guest-submit" id="guest-submit" tabindex="4"
+                              class="form-control btn btn-login" value="Zaloguj się" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group mt-3 mb-5">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="text-center">
+                              <a href="#" tabindex="5" class="forgot-password" id="change-submit">Zrestartuj obraz
+                                captcha</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <!-- Formularz odzyskiwania hasła -->
+                    <form id="password-form" action="/guest-login" method="post" role="form" style="display: none">
                       <div class="form-group mt-5">
                         <input type="text" name="username" id="username" tabindex="1"
                           class="form-control guest-username" placeholder="Login" value="" />

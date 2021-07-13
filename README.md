@@ -21,8 +21,8 @@ Projekt serwisu internetowego, którego główną funkcjonalnościami jest chat,
 
 #### - System rejestracyjny oraz logowania:
 
-- [ ] Prosty formularz rejestracyjny [login, mail, hasło] z captchą    
-- [ ] Formularz logowania 
+- [x] Prosty formularz rejestracyjny [login, mail, hasło] z captchą    
+- [x] Formularz logowania 
 - [ ] Odzyskiwanie hasła
 
 #### - Czat:

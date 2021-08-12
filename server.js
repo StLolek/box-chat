@@ -47,7 +47,7 @@ const serverRedis = new RedisServer({
   port: process.env.REDIS_PORT,
   bin: "/usr/local/bin/redis-server",
 });
-var redisClient = redis.createClient(process.env.REDIS_PORT, "localhost");
+var redisClient = redis.createClient(process.env.REDIS_PORT, "127.0.0.1");
 var RedisStore = require("connect-redis")(session);
 
 const app = express();

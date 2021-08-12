@@ -1,4 +1,4 @@
- .vertical-center {
+.vertical-center {
   min-height: 100%; /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
 
@@ -94,7 +94,7 @@ ul {
   list-style: none;
   overflow-y: scroll;
 }
-ul#rooms{
+ul#rooms {
   list-style: none;
   overflow-y: hidden;
 }
@@ -124,7 +124,7 @@ ul#rooms{
   .caret {
     margin-left: 80%;
   }
-} 
+}
 
 .panel-login {
   border-color: #ccc;
@@ -148,11 +148,11 @@ ul#rooms{
   -moz-transition: all 0.1s linear;
   transition: all 0.1s linear;
 }
-.panel-login  .panel-heading a.active {
+.panel-login .panel-heading a.active {
   color: var(--blue);
   font-size: 18px;
 }
-.panel-login  .panel-heading hr {
+.panel-login .panel-heading hr {
   margin-top: 10px;
   margin-bottom: 0px;
   clear: both;
@@ -230,12 +230,12 @@ ul#rooms{
   background-color: var(--blue);
   border-color: var(--blue);
 }
-.forgot-password {
+a.href-button {
   text-decoration: underline;
   color: #888;
 }
-.forgot-password:hover,
-.forgot-password:focus {
+a.href-button:hover,
+a.href-button:focus {
   text-decoration: underline;
   color: #666;
 }
@@ -258,7 +258,7 @@ ul#rooms{
   border-color: var(--blue);
 }
 
-ul{
+ul {
   text-align: center;
 }
 li {
@@ -274,4 +274,11 @@ li.active {
 .noimportant {
   font-size: 12px;
   color: #888;
+}
+
+
+.toast-center{
+  top:15%;
+  left:50%;
+  margin:0 0 0 -150px;
 }

@@ -19,10 +19,14 @@
   <script>
     $(function () {
 
+      $.get("/getalluserscount", function (data) {
+        console.log(data);
+      });
+
       $.get("/getrooms", function (rooms) {
 
         rooms.forEach(room => {
-          $('ul#rooms').append(`<li class="list-group-item-action d-flex justify-content-around align-items-center" data-value="${room._id}"><div></div> <div class="text-center"> ${room.name} </div> <div class="badge bg-primary rounded-pill">14</div></li>`)
+          $('ul#rooms').append(`<li class="list-group-item-action d-flex justify-content-around align-items-center" data-value="${room._id}"><div></div> <div class="text-center"> ${room.name} </div> <div class="badge bg-primary rounded-pill">${room.count}</div></li>`)
         });
       });
 

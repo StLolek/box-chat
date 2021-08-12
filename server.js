@@ -49,7 +49,7 @@ const serverRedis = new RedisServer({
 });
 
 let redisClient
-if(process.env.REDISCLOUD_URL){
+if(process.env.REDIS_PORT){
     redisClient = redis.createClient(process.env.REDIS_PORT, "127.0.0.1");
 } else {
     redisClient = redis.createClient()

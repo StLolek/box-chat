@@ -105,6 +105,7 @@ dist
 
 # VSCode
 .vscode
+.history/
 .history/server_20210718183452.js
 .history/server_20210725123055.js
 .history/server_20210725123150.js
